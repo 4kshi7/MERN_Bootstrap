@@ -13,31 +13,31 @@ const Login = () => {
     <div
       className="bg-gray-500 h-screen w-screen flex justify-center items-center"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9)), url('https://img.freepik.com/free-photo/top-view-kraft-spiral-notebooks-with-pen-dark-background_140725-141658.jpg')`,
+        backgroundImage: `linear-gradient(rgb(0, 0, 0, 0.3), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1)), url('https://i.pinimg.com/originals/22/a0/ff/22a0ff47046338c1f015610bccdb3b8c.gif')`,
         backgroundPosition: "center 7%",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="container bg-[#000] text-white h-[50vh] w-[40vh] rounded-3xl flex flex-col justify-center items-center gap-5">
+      <div className="container backdrop-blur-xl bg-white/10 text-white h-[50vh] w-[40vh] rounded-3xl flex flex-col justify-center items-center gap-3">
         <h1 className="text-3xl text-center">Login</h1>
         <div className="h-[60%] w-[80%] flex flex-col items-center justify-center gap-8">
           <input
             type="text"
-            placeholder="username"
+            placeholder="tylerdurden@gmail.com"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-[80%] py-2 px-3 bg-slate-700 rounded-lg"
+            className="w-[95%] py-2 px-3 backdrop-blur-xl bg-white/10 rounded-lg focus:outline-none"
           />
           <input
             type="password"
             placeholder="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-[80%] py-2 px-3 bg-slate-700 rounded-lg"
+            className="w-[95%] py-2 px-3 backdrop-blur-xl bg-white/10 rounded-lg focus:outline-none"
           />
           <button
-            className="w-[80%] py-2 px-3 bg-blue-600 text-white rounded-xl"
+            className="w-[90%] py-2 px-3 backdrop-blur-xl bg-blue-600/20 text-white rounded-xl hover:scale-105 hover:bg-blue-900/50 duration-75"
             onClick={async () => {
                 const response = await axios.post(
                   "http://localhost:5454/api/v1/signin",
