@@ -1,5 +1,5 @@
 
-# MERN Bolier Plate
+# MERN Boilerplate
 
 This is Boiler for Full Stack MERN Application.
 
