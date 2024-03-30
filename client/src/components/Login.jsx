@@ -1,13 +1,29 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5454/api/v1/signin",
+        {
+          username,
+          password
+        }
+      );
+      localStorage.setItem("token", response.data.token);
+      navigate("/dashboard");
+    } catch (error) {
+      toast.error("Invalid username or password");
+    }
+  };
 
   return (
     <div
@@ -38,22 +54,14 @@ const Login = () => {
           />
           <button
             className="w-[90%] py-2 px-3 backdrop-blur-xl bg-blue-600/20 text-white rounded-xl hover:scale-105 hover:bg-blue-900/50 duration-75"
-            onClick={async () => {
-                const response = await axios.post(
-                  "http://localhost:5454/api/v1/signin",
-                  {
-                      username,
-                      password
-                  });
-                  localStorage.setItem("token", response.data.token);
-                  navigate("/dashboard")
-              }}
+            onClick={handleLogin}
           >
             Submit
           </button>
         </div>
         <Link to="/signup">Don't have an account? Sign Up</Link>
       </div>
+      <ToastContainer />
     </div>
   );
 };
