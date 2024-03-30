@@ -73,31 +73,22 @@ export const signin = async (req, res) => {
   });
 
   if (user) {
-    const token = req.headers.authorization?.split(" ")[1];
+    const token = jwt.sign(
+      {
+        userId: user._id,
+      },
+      process.env.JWT_SECRET
+    );
 
-    if (!token) {
-      return res.status(401).json({
-        message: "Unauthorized: No token provided",
-      });
-    }
-
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      res.json({
-        message: "Successfully logged in",
-        token: token,
-      });
-    } catch (err) {
-      return res.status(401).json({
-        message: "Unauthorized: Invalid token",
-      });
-    }
-  } else {
-    res.status(411).json({
-      message: "Error while logging in",
+    res.json({
+      token: token,
     });
+    return;
   }
+
+  res.status(411).json({
+    message: "Error while logging in",
+  });
 };
 
 export const update = async (req, res) => {
