@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/userSchema.js";
 import zod from "zod";
+import bcrypt from "bcrypt";
 
 const signupBody = zod.object({
   username: zod.string().email(),
@@ -37,10 +38,11 @@ export const signup = async (req, res) => {
       message: "Email already taken/Incorrect inputs",
     });
   }
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
   const user = await User.create({
     username: req.body.username,
-    password: req.body.password,
+    password: hashedPassword,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
   });
@@ -69,27 +71,31 @@ export const signin = async (req, res) => {
 
   const user = await User.findOne({
     username: req.body.username,
-    password: req.body.password,
   });
 
   if (user) {
-    const token = jwt.sign(
-      {
-        userId: user._id,
-      },
-      process.env.JWT_SECRET
-    );
+    const passwordMatch = await bcrypt.compare(req.body.password, user.password);
 
-    res.json({
-      token: token,
-    });
-    return;
+    if (passwordMatch) {
+      const token = jwt.sign(
+        {
+          userId: user._id,
+        },
+        process.env.JWT_SECRET
+      );
+
+      res.json({
+        token: token,
+      });
+      return;
+    }
   }
 
   res.status(411).json({
     message: "Error while logging in",
   });
 };
+
 
 export const update = async (req, res) => {
   const { success } = updateBody.safeParse(req.body);
